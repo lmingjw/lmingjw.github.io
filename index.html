@@ -9,22 +9,58 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background-color: #ffffff; color: #333; line-height: 1.6; }
         
-        /* 顶部五颜六色播放着的背景栏 */
+        /* 【核心修改】顶部五颜六色背景栏：16:9 居中长方形 */
         .hero {
             background: linear-gradient(45deg, #ff9a9e, #fecfef, #a1c4fd, #c2e9fb);
             background-size: 400% 400%;
             animation: gradientBG 8s ease infinite;
-            padding: 80px 20px;
+            
+            /* 16:9 比例限制 */
+            width: 100%;
+            max-width: 960px; /* 限制最大宽度，防止在大屏幕上过于巨大 */
+            aspect-ratio: 16 / 9; /* 核心属性：强制保持16:9比例 */
+            
+            /* 居中显示 */
+            margin: 0 auto; 
+            
+            /* 内部文字排版 */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             text-align: center;
             color: white;
+            padding: 20px;
         }
         @keyframes gradientBG {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
-        .hero h1 { font-size: 2.5rem; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.2); }
-        .hero p { font-size: 1.2rem; opacity: 0.9; }
+        
+        /* 欢迎语样式 */
+        .hero h1 { 
+            font-size: 2rem; 
+            margin-bottom: 10px; 
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2); 
+        }
+        
+        /* 名字专属样式：小一点、无背景、带上下浮动动画 */
+        .hero h2.name { 
+            font-size: 1.8rem; 
+            font-weight: bold; 
+            letter-spacing: 5px; 
+            animation: float 3s ease-in-out infinite;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        /* 浮动动画关键帧 */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .hero p { font-size: 1.2rem; opacity: 0.9; margin-top: 10px; }
 
         /* 平整的蓝色导航栏 */
         nav {
@@ -51,6 +87,9 @@
         .card:hover { transform: translateY(-5px); }
         .card h2 { color: #1e90ff; margin-bottom: 15px; font-size: 1.5rem; }
         .card p, .card li { margin-bottom: 8px; font-size: 1rem; }
+
+        /* 解决导航栏遮挡内容的问题 */
+        section[id] { scroll-margin-top: 60px; padding-top: 10px; }
 
         /* 互动按钮样式 */
         .btn {
@@ -81,7 +120,7 @@
             transition: all 0.3s; white-space: nowrap; margin-left: 10px;
         }
         .copy-btn:hover { background-color: #0066cc; }
-        .copy-btn.copied { background-color: #28a745; } /* 复制成功变绿 */
+        .copy-btn.copied { background-color: #28a745; } 
 
         /* 烦恼粉碎机小游戏 */
         .bubble-game { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 15px; }
@@ -121,18 +160,19 @@
     <!-- 顶部背景栏 -->
     <div class="hero">
         <h1 id="typewriter"></h1>
-        <p>自由 · 紧跟潮流 · 探索未知的世界</p >
+        <h2 id="nameTypewriter" class="name"></h2>
+        <p>自由 · 紧跟潮流 · 探索未知的世界</p>
     </div>
 
     <!-- 导航栏 -->
     <nav>
         <ul>
-            <li><a href=" ">首页</a ></li>
-            <li><a href="#about">关于我</a ></li>
-            <li><a href="#skills">经历与技能</a ></li>
-            <li><a href="#goals">未来规划</a ></li>
-            <li><a href="#contact">联系我</a ></li>
-            <li><a href="#games">趣味互动</a ></li>
+            <li><a href="#home">首页</a></li>
+            <li><a href="#about">关于我</a></li>
+            <li><a href="#skills">经历与技能</a></li>
+            <li><a href="#goals">未来规划</a></li>
+            <li><a href="#contact">联系我</a></li>
+            <li><a href="#games">趣味互动</a></li>
         </ul>
     </nav>
 
@@ -140,20 +180,24 @@
         <!-- 首页/性格猜测 -->
         <section id="home" class="card">
             <h2>👋 嗨，我是李明杰</h2>
-            <p>欢迎来到我的专属小天地！我是一个13岁的初二学生，坐标四川乐山沐川。</p >
-            <p>你说我性格怎样？不太外向，偶尔有点小内耗，但骨子里向往自由，喜欢紧跟潮流。</p >
+            <p>欢迎来到我的专属小天地！我是一个13岁的初二学生，坐标四川乐山沐川。</p>
+            <p>你说我性格怎样？不太外向，偶尔有点小内耗，但骨子里向往自由，喜欢紧跟潮流。</p>
             <button class="btn" onclick="guessMBTI()">🔮 猜猜我的MBTI</button>
-            <p id="mbti-result" style="margin-top:10px; font-weight:bold; color:#1e90ff;"></p >
+            <p id="mbti-result" style="margin-top:10px; font-weight:bold; color:#1e90ff;"></p>
         </section>
 
-        <!-- 关于我 -->
+        <!-- 关于我（搞笑家庭版） -->
         <section id="about" class="card">
             <h2>👤 个人档案</h2>
             <ul>
                 <li><strong>出生年月：</strong>2013年2月21日</li>
                 <li><strong>现居地：</strong>四川·乐山·沐川</li>
                 <li><strong>情感状态：</strong>小朋友是不能结婚的 😂</li>
-                <li><strong>家庭成员：</strong>父母健在，有一个哥哥</li>
+                <li><strong>家庭成员：</strong></li>
+                <li style="padding-left: 20px;">👨‍💼 家里有一个掌柜的家父</li>
+                <li style="padding-left: 20px;">👩‍🍳 一位大厨皇母</li>
+                <li style="padding-left: 20px;">📚 一个把自己焊死在书桌前的哥</li>
+                <li style="padding-left: 20px;">🎈 还有一个无忧无虑、快乐自己的我</li>
                 <li><strong>社交偏好：</strong>喜欢和朋友玩，也喜欢享受孤独</li>
                 <li><strong>兴趣爱好：</strong>摄影、阅读、学习、偶尔打游戏</li>
                 <li><strong>网络ID：</strong>世间过客</li>
@@ -164,28 +208,28 @@
         <!-- 经历与技能 -->
         <section id="skills" class="card">
             <h2>🏆 我的高光时刻</h2>
-            <p>虽然目前还没有太多专业技能，但我一直在努力探索！</p >
+            <p>虽然目前还没有太多专业技能，但我一直在努力探索！</p>
             <ul>
                 <li>🥉 <strong>四川省跆拳道锦标赛第三名</strong></li>
                 <li>🏃‍♂️ 参加过人生中最大的比赛——<strong>省运会</strong></li>
                 <li>📝 目前就读于沐川县实验初级中学（初二）</li>
             </ul>
-            <p style="margin-top:10px; font-style:italic;">最大缺点：体重有点超标 🤣🤣🤣 正在努力改善中！</p >
+            <p style="margin-top:10px; font-style:italic;">最大缺点：体重有点超标 🤣🤣🤣 正在努力改善中！</p>
         </section>
 
         <!-- 未来规划 -->
         <section id="goals" class="card">
             <h2>🚀 未来规划</h2>
-            <p><strong>短期目标（1年内）：</strong>争取做好自己，考上高分！</p >
-            <p><strong>长期目标（3-5年）：</strong>好好学习，考上心仪的学校。</p >
-            <p><strong>人生终极愿景：</strong>成为一名优秀的教师 🍎</p >
-            <p style="margin-top:10px; color:#666;">财务状况：小朋友不需要还房贷车贷，无债一身轻~</p >
+            <p><strong>短期目标（1年内）：</strong>争取做好自己，考上高分！</p>
+            <p><strong>长期目标（3-5年）：</strong>好好学习，考上心仪的学校。</p>
+            <p><strong>人生终极愿景：</strong>成为一名优秀的教师 🍎</p>
+            <p style="margin-top:10px; color:#666;">财务状况：小朋友不需要还房贷车贷，无债一身轻~</p>
         </section>
 
-        <!-- 【已升级】联系我板块（带一键复制） -->
+        <!-- 联系我板块（带一键复制） -->
         <section id="contact" class="card">
             <h2>📱 联系我</h2>
-            <p>如果你想和我交朋友，或者一起交流摄影、游戏，欢迎通过以下方式找到我（网络ID：世间过客）：</p >
+            <p>如果你想和我交朋友，或者一起交流摄影、游戏，欢迎通过以下方式找到我（网络ID：世间过客）：</p>
             <div class="contact-grid">
                 <div class="contact-item">
                     <div class="contact-info">
@@ -221,10 +265,10 @@
         <!-- 趣味互动小游戏 -->
         <section id="games" class="card">
             <h2>🎮 烦恼粉碎机</h2>
-            <p>觉得内耗了？点击下面的气泡，把烦恼全部消灭吧！</p >
+            <p>觉得内耗了？点击下面的气泡，把烦恼全部消灭吧！</p>
             <div class="bubble-game" id="bubbleContainer"></div>
             <div class="game-status">
-                <p class="game-score" id="score">已消灭烦恼：0 个</p >
+                <p class="game-score" id="score">已消灭烦恼：0 个</p>
                 <button class="btn-clear" onclick="clearGame()">🗑️ 一键清空数据</button>
             </div>
         </section>
@@ -234,25 +278,39 @@
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal">
             <h3>🔐 身份验证</h3>
-            <p>请输入验证码以查看敏感信息</p >
+            <p>请输入验证码以查看敏感信息</p>
             <input type="password" id="verifyCode" placeholder="请输入验证码">
             <button class="btn" onclick="verifyID()">确认</button>
             <button class="btn" style="background:#ccc; color:#333; margin-left:10px;" onclick="closeModal()">取消</button>
-            <p id="verifyMsg" style="margin-top:10px; color:red; font-size:0.9rem;"></p >
+            <p id="verifyMsg" style="margin-top:10px; color:red; font-size:0.9rem;"></p>
         </div>
     </div>
 
     <script>
-        // 1. 打字机效果
-        const text = "欢迎来到我的网站 --- 李明杰";
+        // 1. 升级后的打字机效果（分为欢迎语和名字两部分）
+        const welcomeText = "欢迎来到我的网站";
+        const nameText = "李明杰";
         let index = 0;
+
         function typeWriter() {
-            if (index < text.length) {
-                document.getElementById("typewriter").innerHTML += text.charAt(index);
+            if (index < welcomeText.length) {
+                document.getElementById("typewriter").innerHTML += welcomeText.charAt(index);
                 index++;
                 setTimeout(typeWriter, 100);
+            } else {
+                typeWriterName();
             }
         }
+
+        let nameIndex = 0;
+        function typeWriterName() {
+            if (nameIndex < nameText.length) {
+                document.getElementById("nameTypewriter").innerHTML += nameText.charAt(nameIndex);
+                nameIndex++;
+                setTimeout(typeWriterName, 100);
+            }
+        }
+
         window.onload = typeWriter;
 
         // 2. MBTI猜测小游戏
@@ -315,15 +373,12 @@
             createBubbles();
         }
 
-        // 6. 【新增】一键复制功能
+        // 6. 一键复制功能
         function copyText(text, btnElement) {
             navigator.clipboard.writeText(text).then(() => {
-                // 复制成功后的视觉反馈
                 const originalText = btnElement.innerText;
                 btnElement.innerText = "✅ 已复制";
                 btnElement.classList.add("copied");
-                
-                // 2秒后恢复原状
                 setTimeout(() => {
                     btnElement.innerText = originalText;
                     btnElement.classList.remove("copied");
