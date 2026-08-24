@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>李明杰的专属个人网站</title>
+    <style>
+        /* 全局样式与基础设置 */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #ffffff; color: #333; line-height: 1.6; }
+        
+        /* 顶部五颜六色播放着的背景栏 */
+        .hero {
+            background: linear-gradient(45deg, #ff9a9e, #fecfef, #a1c4fd, #c2e9fb);
+            background-size: 400% 400%;
+            animation: gradientBG 8s ease infinite;
+            padding: 80px 20px;
+            text-align: center;
+            color: white;
+        }
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .hero h1 { font-size: 2.5rem; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.2); }
+        .hero p { font-size: 1.2rem; opacity: 0.9; }
+
+        /* 平整的蓝色导航栏 */
+        nav {
+            background-color: #1e90ff;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        nav ul { display: flex; justify-content: center; list-style: none; }
+        nav ul li a {
+            color: white; text-decoration: none; padding: 15px 30px;
+            transition: background 0.3s; display: block;
+        }
+        nav ul li a:hover { background-color: #0066cc; }
+
+        /* 内容区域布局 */
+        .container { max-width: 900px; margin: 40px auto; padding: 0 20px; }
+        .card {
+            background: #f8fbff; border-left: 5px solid #1e90ff;
+            padding: 25px; margin-bottom: 30px; border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(30,144,255,0.1); transition: transform 0.3s;
+        }
+        .card:hover { transform: translateY(-5px); }
+        .card h2 { color: #1e90ff; margin-bottom: 15px; font-size: 1.5rem; }
+        .card p, .card li { margin-bottom: 8px; font-size: 1rem; }
+
+        /* 互动按钮样式 */
+        .btn {
+            display: inline-block; padding: 10px 20px; background-color: #1e90ff;
+            color: white; border: none; border-radius: 25px; cursor: pointer;
+            font-size: 1rem; margin-top: 10px; transition: background 0.3s;
+        }
+        .btn:hover { background-color: #0066cc; }
+
+        /* 烦恼粉碎机小游戏 */
+        .bubble-game { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 15px; }
+        .bubble {
+            width: 60px; height: 60px; background: #1e90ff; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: white; cursor: pointer; transition: all 0.3s; font-size: 0.8rem;
+        }
+        .bubble:hover { background: #0066cc; transform: scale(1.1); }
+
+        /* 游戏状态栏（包含分数和清空按钮） */
+        .game-status {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-top: 15px; flex-wrap: wrap; gap: 10px;
+        }
+        .game-score { font-size: 1.2rem; color: #1e90ff; font-weight: bold; }
+        
+        /* 清空数据按钮样式 */
+        .btn-clear {
+            padding: 8px 15px; background-color: #ff4d4d; color: white;
+            border: none; border-radius: 20px; cursor: pointer; font-size: 0.9rem;
+            transition: background 0.3s;
+        }
+        .btn-clear:hover { background-color: #cc0000; }
+
+        /* 弹窗样式 */
+        .modal-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 2000;
+        }
+        .modal {
+            background: white; padding: 30px; border-radius: 10px; text-align: center; width: 300px;
+        }
+        .modal input { padding: 10px; width: 100%; margin: 15px 0; border: 1px solid #ccc; border-radius: 5px; }
+    </style>
+</head>
+<body>
+
+    <!-- 顶部背景栏 -->
+    <div class="hero">
+        <h1 id="typewriter"></h1>
+        <p>自由 · 紧跟潮流 · 探索未知的世界</p >
+    </div>
+
+    <!-- 平整的导航栏 -->
+    <nav>
+        <ul>
+            <li><a href=" ">首页</a ></li>
+            <li><a href="#about">关于我</a ></li>
+            <li><a href="#skills">经历与技能</a ></li>
+            <li><a href="#goals">未来规划</a ></li>
+            <li><a href="#games">趣味互动</a ></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <!-- 首页/性格猜测 -->
+        <section id="home" class="card">
+            <h2> 嗨，我是李明杰</h2>
+            <p>欢迎来到我的专属小天地！我是一个13岁的初二学生，坐标四川乐山沐川。</p >
+            <p>你说我性格怎样？不太外向，偶尔有点小内耗，但骨子里向往自由，喜欢紧跟潮流。</p >
+            <button class="btn" onclick="guessMBTI()"> 猜猜我的MBTI</button>
+            <p id="mbti-result" style="margin-top:10px; font-weight:bold; color:#1e90ff;"></p >
+        </section>
+
+        <!-- 关于我 -->
+        <section id="about" class="card">
+            <h2> 个人档案</h2>
+            <ul>
+                <li><strong>出生年月：</strong>2013年2月21日</li>
+                <li><strong>现居地：</strong>四川·乐山·沐川</li>
+                <li><strong>情感状态：</strong>小朋友是不能结婚的 </li>
+                <li><strong>家庭成员：</strong>父母健在，有一个哥哥</li>
+                <li><strong>社交偏好：</strong>喜欢和朋友玩，也喜欢享受孤独</li>
+                <li><strong>兴趣爱好：</strong>摄影、阅读、学习、偶尔打游戏</li>
+                <li><strong>网络ID：</strong>世间过客</li>
+            </ul>
+            <button class="btn" onclick="openModal()"> 查看核心证件信息</button>
+        </section>
+
+        <!-- 经历与技能 -->
+        <section id="skills" class="card">
+            <h2> 我的高光时刻</h2>
+            <p>虽然目前还没有太多专业技能，但我一直在努力探索！</p >
+            <ul>
+                <li> <strong>四川省跆拳道锦标赛第三名</strong></li>
+                <li>‍♂️ 参加过人生中最大的比赛——<strong>省运会</strong></li>
+                <li> 目前就读于沐川县实验初级中学（初二）</li>
+            </ul>
+            <p style="margin-top:10px; font-style:italic;">最大缺点：体重有点超标  正在努力改善中！</p >
+        </section>
+
+        <!-- 未来规划 -->
+        <section id="goals" class="card">
+            <h2> 未来规划</h2>
+            <p><strong>短期目标（1年内）：</strong>争取做好自己，考上高分！</p >
+            <p><strong>长期目标（3-5年）：</strong>好好学习，考上心仪的学校。</p >
+            <p><strong>人生终极愿景：</strong>成为一名优秀的教师 </p >
+            <p style="margin-top:10px; color:#666;">财务状况：小朋友不需要还房贷车贷，无债一身轻~</p >
+        </section>
+
+        <!-- 趣味互动小游戏 -->
+        <section id="games" class="card">
+            <h2> 烦恼粉碎机</h2>
+            <p>觉得内耗了？点击下面的气泡，把烦恼全部消灭吧！</p >
+            <div class="bubble-game" id="bubbleContainer"></div>
+            
+            <!-- 游戏状态栏：分数 + 清空数据按钮 -->
+            <div class="game-status">
+                <p class="game-score" id="score">已消灭烦恼：0 个</p >
+                <button class="btn-clear" onclick="clearGame()">️ 一键清空数据</button>
+            </div>
+        </section>
+    </div>
+
+    <!-- 证件信息验证弹窗 -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <h3> 身份验证</h3>
+            <p>请输入验证码以查看敏感信息</p >
+            <input type="password" id="verifyCode" placeholder="请输入验证码">
+            <button class="btn" onclick="verifyID()">确认</button>
+            <button class="btn" style="background:#ccc; color:#333; margin-left:10px;" onclick="closeModal()">取消</button>
+            <p id="verifyMsg" style="margin-top:10px; color:red; font-size:0.9rem;"></p >
+        </div>
+    </div>
+
+    <script>
+        // 1. 打字机效果
+        const text = "欢迎来到我的网站 --- 李明杰";
+        let index = 0;
+        function typeWriter() {
+            if (index < text.length) {
+                document.getElementById("typewriter").innerHTML += text.charAt(index);
+                index++;
+                setTimeout(typeWriter, 100);
+            }
+        }
+        window.onload = typeWriter;
+
+        // 2. MBTI猜测小游戏
+        function guessMBTI() {
+            const result = document.getElementById("mbti-result");
+            result.innerText = "分析中...";
+            setTimeout(() => {
+                result.innerText = " 结果出来了！你大概率是 INFP（调停者）或 ISFJ（守卫者）！内心丰富，向往自由，偶尔内耗但充满善意，对吧？";
+            }, 1000);
+        }
+
+        // 3. 证件信息验证
+        function openModal() { document.getElementById("modalOverlay").style.display = "flex"; }
+        function closeModal() { 
+            document.getElementById("modalOverlay").style.display = "none"; 
+            document.getElementById("verifyCode").value = "";
+            document.getElementById("verifyMsg").innerText = "";
+        }
+        function verifyID() {
+            const code = document.getElementById("verifyCode").value;
+            const msg = document.getElementById("verifyMsg");
+            if (code === "33113311") {
+                msg.style.color = "green";
+                msg.innerText = "验证成功！证件号：511123201302210815";
+            } else {
+                msg.style.color = "red";
+                msg.innerText = "验证码错误，请重新输入！";
+            }
+        }
+
+        // 4. 烦恼粉碎机小游戏
+        let score = 0;
+        const worries = ["内耗", "体重", "考试", "作业", "烦恼", "焦虑", "emo", "压力"];
+        const container = document.getElementById("bubbleContainer");
+        
+        function createBubbles() {
+            container.innerHTML = '';
+            for(let i=0; i<8; i++){
+                const bubble = document.createElement("div");
+                bubble.className = "bubble";
+                bubble.innerText = worries[Math.floor(Math.random() * worries.length)];
+                bubble.onclick = function() {
+                    this.style.transform = "scale(0)";
+                    this.style.opacity = "0";
+                    score++;
+                    document.getElementById("score").innerText = "已消灭烦恼：" + score + " 个";
+                    setTimeout(() => this.remove(), 300);
+                };
+                container.appendChild(bubble);
+            }
+        }
+        createBubbles();
+        // 每5秒自动生成一波新的烦恼
+        setInterval(createBubbles, 5000);
+
+        // 5. 【新增】一键清空游戏数据功能
+        function clearGame() {
+            score = 0; // 重置分数
+            document.getElementById("score").innerText = "已消灭烦恼：0 个"; // 更新显示
+            container.innerHTML = ''; // 清空所有气泡
+            createBubbles(); // 重新生成一波全新的气泡
+        }
+    </script>
+</body>
+</html>
