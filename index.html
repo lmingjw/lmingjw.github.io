@@ -12,7 +12,7 @@
             height: 100%;
             font-family: "Microsoft YaHei", sans-serif;
             background-color: #f0f2f5;
-            overflow: hidden; /* 防止滚动 */
+            overflow: hidden; /* 防止出现滚动条 */
         }
 
         /* 遮罩层 */
@@ -56,21 +56,23 @@
             letter-spacing: 2px;
         }
 
+        /* 正文内容样式 */
         .content-text {
             font-size: 14px;
             color: #666;
             line-height: 1.8;
             text-align: left;
-            margin-bottom: 30px;
-            white-space: pre-line; /* 保留换行格式 */
+            margin-bottom: 10px; /* 减少正文与落款的间距 */
         }
 
+        /* 落款样式 */
         .signature {
             text-align: right;
             font-size: 14px;
             color: #333;
             font-weight: bold;
-            margin-top: 20px;
+            margin-top: 10px;
+            margin-bottom: 30px; /* 与按钮保持两行左右的间距 */
         }
 
         /* 按钮样式 */
@@ -83,6 +85,7 @@
             border-radius: 5px;
             cursor: pointer;
             transition: background 0.3s;
+            display: inline-block; /* 确保按钮不会撑满整行，居中显示 */
         }
 
         .btn-confirm:hover {
@@ -125,7 +128,7 @@
             position: fixed;
             top: 20px;
             right: 20px;
-            background-color: #25D366; /* 微信绿风格 */
+            background-color: #25D366; 
             color: white;
             padding: 10px 15px;
             border-radius: 30px;
@@ -133,7 +136,7 @@
             cursor: pointer;
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
             z-index: 1001;
-            display: none; /* 初始隐藏 */
+            display: none; 
             transition: transform 0.2s;
         }
         
@@ -195,12 +198,17 @@
         <div class="notice-box">
             <span class="icon-warning">⚠️</span>
             <div class="title">维护公告</div>
+            
+            <!-- 正文部分：去除了多余的空行，只保留一个换行 -->
             <div class="content-text">
-亲爱的用户：
-
-为了保证服务质量与您的观览体验，本网站依据《GitHub网络安全使用规范》、《中华人民共和国网络安全法则》、《GitHub用户与使用守则》于2026年8月26日7:15正式进入维护模式，完成时间待定，敬请谅解！
+                亲爱的用户：<br>
+                为了保证服务质量与您的观览体验，本网站依据《GitHub网络安全使用规范》、《中华人民共和国网络安全法则》、《GitHub用户与使用守则》于2026年8月26日7:15正式进入维护模式，完成时间待定，敬请谅解！
             </div>
+            
+            <!-- 落款 -->
             <div class="signature">lmingjw.github.io创办人</div>
+            
+            <!-- 按钮放在落款正下方，居中显示 -->
             <button class="btn-confirm" onclick="confirmMaintenance()">确定</button>
         </div>
     </div>
